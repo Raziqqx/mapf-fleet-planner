@@ -64,3 +64,21 @@ Decisions taken while building, with the reason for each. Newest at the bottom o
 - **MovingAI maps are downloaded, not committed** (`scripts/download_movingai.sh`, ~4 MB, ODC-By
   licence, see `data/README.md`). The script extracts with `python3 -m zipfile` because `unzip` is
   not installed everywhere.
+
+## Benchmark (`scripts/run_benchmark.sh`, results in `results/`)
+- **Grid: 5 maps x 10..100 agents (step 10) x 10 "random" scenarios x 4 planners** (pp, cbs,
+  ecbs w=1.2, ecbs w=1.5), 10 s per instance: 2,000 rows, ~7 min wall time. 10 s instead of the
+  literature's usual 60 s keeps the run near the ~15 min budget; success rates at 60 s would be
+  somewhat higher for CBS and ECBS w=1.2.
+- **Early stop per (map, planner)**: after a count where a planner solves 0/10, larger counts are
+  written as `skipped` and counted as failures (MAPF success rates are monotone in practice, and
+  this saves most of the time-limit burn). Visible in the CSV, stated in the summary.
+- **(map, planner) groups run in parallel** (10 threads on a 20-thread i5-14500HX). Runtimes are
+  therefore measured under load and on a mix of P- and E-cores: compare planners by success rate
+  and by order of magnitude of runtime, not by small runtime differences. Run B's profiling uses
+  single-threaded runs.
+- **Every solved plan is re-checked by the validator in the runner**; the runner exits non-zero if
+  any plan is invalid. In the recorded run: 0 invalid of 1,416 solved.
+- **Summary** (`scripts/summarize.py`, standard library only): success rate and median runtime of
+  solved instances per agent count, the largest count with >= 50 % success, and SoC / CBS SoC on
+  instances both planners solved (so ratios are only available where CBS finished).
