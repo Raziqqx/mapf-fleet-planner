@@ -35,7 +35,10 @@ profile: build
 	scripts/download_movingai.sh
 	python3 -I scripts/profile.py --reps 5
 
-reproduce: bench profile
+plots:  # needs matplotlib (pip install matplotlib==3.9.2)
+	$(PYTHON) scripts/plot_bench.py results/bench.csv results/
+
+reproduce: bench profile plots
 
 replay: python
 	PYTHONPATH=build/release $(PYTHON) python/examples/replay_svg.py --out docs/replay.svg

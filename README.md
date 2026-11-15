@@ -75,7 +75,12 @@ not been made yet.
 
 Benchmark (run A): 5 MovingAI maps, 10-100 agents, 10 random scenarios each, 4 planners, 10 s
 per instance, 2,000 runs. Every solved plan (1,416) was re-checked by the validator: 0 invalid.
-Source: `results/bench_summary.md`.
+Source: `results/bench_summary.md`. Plots vs number of agents (`make plots`):
+
+![success rate vs agents](results/bench_success.png)
+
+Also: [sum of costs](results/bench_sum_of_costs.png), [makespan](results/bench_makespan.png),
+[runtime](results/bench_runtime_s.png) (cost/makespan/runtime are means over solved instances).
 
 Largest agent count with at least 50 % success:
 
@@ -112,7 +117,6 @@ Low-level search profile (run B, single process pinned to one core, median of 5;
 - The arena raises peak memory (PP: 52.1 to 75.5 MiB against the bucket-queue run).
 - CI (`.github/workflows/ci.yml`) is written but has not run on GitHub yet.
 - Lifelong (online task arrival) mode is not implemented.
-- Results are reported as tables; no plots are generated.
 
 ## Target roles
 
@@ -133,7 +137,7 @@ Low-level search profile (run B, single process pinned to one core, median of 5;
 | `python/` | pybind11 module `mapf_py`, examples, pytest smoke test |
 | `scripts/` | data download, benchmark runner, summary, profiler |
 | `tests/` | GoogleTest suite, brute-force reference |
-| `results/` | benchmark CSV and summary, profile tables |
+| `results/` | benchmark CSV, summary and plots, profile tables |
 
 Docs: [features](docs/FEATURES.md), [design](docs/DESIGN.md),
 [interview notes](docs/INTERVIEW_NOTES.md), [decisions](DECISIONS.md).

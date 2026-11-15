@@ -84,7 +84,6 @@ expanded in every variant:
   because the buffer is kept between searches. It is bounded at 256 MiB per thread.
 - CI is written but has not run on GitHub; the benchmark and profile are local only.
 - Lifelong (online task arrival) mode is not implemented.
-- Results are tables only; no plots are generated.
 - One machine (i5-14500HX under WSL2), 32x32-class maps only.
 
 ## Next steps
