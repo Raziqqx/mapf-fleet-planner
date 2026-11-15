@@ -1,0 +1,24 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+  "configurePresets": [
+    { "name": "base", "hidden": true, "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}" },
+    { "name": "release", "inherits": "base", "displayName": "Optimised build (benchmarks)",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" } },
+    { "name": "asan", "inherits": "base", "displayName": "ASan + UBSan build for the tests",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug", "CMAKE_CXX_FLAGS_DEBUG": "-O1 -g",
+                          "MAPF_SANITIZE": "ON" } }
+  ],
+  "buildPresets": [
+    { "name": "release", "configurePreset": "release" },
+    { "name": "asan", "configurePreset": "asan" }
+  ],
+  "testPresets": [
+    { "name": "base", "hidden": true, "output": { "outputOnFailure": true },
+      "environment": { "ASAN_OPTIONS": "detect_leaks=1",
+                       "UBSAN_OPTIONS": "print_stacktrace=1:halt_on_error=1" } },
+    { "name": "release", "inherits": "base", "configurePreset": "release" },
+    { "name": "asan", "inherits": "base", "configurePreset": "asan" }
+  ]
+}

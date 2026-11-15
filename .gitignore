@@ -1,0 +1,7 @@
+build/
+.venv/
+__pycache__/
+# MovingAI files are downloaded by scripts/download_movingai.sh (see data/README.md).
+data/maps/
+data/scen/
+data/.cache/
