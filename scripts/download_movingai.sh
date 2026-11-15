@@ -5,7 +5,8 @@
 set -euo pipefail
 
 BASE_URL="https://movingai.com/benchmarks/mapf"
-MAPS=(empty-32-32 random-32-32-20 room-32-32-4 maze-32-32-2 warehouse-10-20-10-2-1)
+# MAPF_MAPS="room-32-32-4" limits the download (CI fetches one small map).
+read -r -a MAPS <<< "${MAPF_MAPS:-empty-32-32 random-32-32-20 room-32-32-4 maze-32-32-2 warehouse-10-20-10-2-1}"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CACHE="$ROOT/data/.cache"
