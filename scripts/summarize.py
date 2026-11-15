@@ -57,6 +57,13 @@ def main():
         "of the scenarios at a smaller one; counted as a failure.",
         "",
     ]
+    if args.config and "parallel" in args.config:
+        out += [
+            "**Note:** runtimes were measured under parallel load and are noisy; success rates "
+            "near the time limit may be slightly understated. Clean single-threaded timings are "
+            "in `results/profile.md`.",
+            "",
+        ]
 
     # Headline: the largest agent count each planner solves in >= 50 % of scenarios.
     out += ["## Largest agent count with >= 50 % success", ""]

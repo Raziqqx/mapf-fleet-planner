@@ -152,6 +152,6 @@ Decisions taken while building, with the reason for each. Newest at the bottom o
 
 ## Run-A benchmark not re-run serially
 - The summed per-instance runtime of the run-A grid is 33 min (most of it 10 s time-outs), over
-  the ~15 min budget, so it was not re-run. `results/bench.csv` keeps its success rates, which do
-  not depend on load; its runtimes were measured with 10 parallel groups and are noisy. Clean,
+  the ~15 min budget, so it was not re-run. `results/bench.csv` keeps its success rates (instances
+  finishing near the 10 s limit may be slightly understated under load); its runtimes were measured with 10 parallel groups and are noisy. Clean,
   single-threaded timings are in `results/profile.md`. `make bench` re-runs it serially.

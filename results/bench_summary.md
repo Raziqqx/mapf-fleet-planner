@@ -4,6 +4,8 @@ Configuration: maps=empty-32-32,random-32-32-20,room-32-32-4,maze-32-32-2,wareho
 
 2000 rows; every solved plan was checked by the independent validator (0 invalid). "skipped" = a larger agent count after the planner solved none of the scenarios at a smaller one; counted as a failure.
 
+**Note:** runtimes were measured under parallel load and are noisy; success rates near the time limit may be slightly understated. Clean single-threaded timings are in `results/profile.md`.
+
 ## Largest agent count with >= 50 % success
 
 | map | pp | cbs | ecbs_w1.2 | ecbs_w1.5 |
