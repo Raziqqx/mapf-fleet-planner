@@ -55,6 +55,33 @@ inline int path_cost(const Path& path) { return static_cast<int>(path.size()) - 
 long sum_of_costs(const std::vector<Path>& paths);
 int makespan(const std::vector<Path>& paths);
 
+// Implementation switches for the single-agent search, all chosen at run time
+// so before/after profiles come from one binary (see scripts/profile.py).
+// Every combination expands exactly the same states in the same order (the
+// ordering keys are total), so only speed and memory differ, never the result.
+enum class OpenList {
+    Set,         // original: std::set for OPEN (by f) and FOCAL (by conflicts, f, -t, id)
+    BinaryHeap,  // binary heaps with lazy deletion for OPEN, the not-yet-focal nodes and FOCAL
+    Bucket,      // OPEN as buckets indexed by the integer f; FOCAL stays a binary heap
+};
+enum class NodeLayout {
+    AoS,  // one vector of node structs
+    SoA,  // one vector per node field
+};
+struct SearchTuning {
+    OpenList open_list = OpenList::Bucket;
+    NodeLayout layout = NodeLayout::AoS;
+    // Allocate search nodes, the (cell, t) index and the queues from a per-thread
+    // arena that is reused across searches, instead of the global heap.
+    bool arena = true;
+};
+// Process-wide setting. Set it before starting planners; it is read once per
+// single-agent search, so changing it while planners run is a data race.
+void set_search_tuning(const SearchTuning& tuning);
+SearchTuning search_tuning();
+const char* to_string(OpenList open_list);
+const char* to_string(NodeLayout layout);
+
 // Baseline: agents are planned one at a time in scenario order, each with a
 // space-time A* that avoids the paths reserved by the agents before it.
 // Fast but incomplete: it returns Status::Failed when an agent finds no path.
