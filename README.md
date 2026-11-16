@@ -5,8 +5,6 @@ path finding, MAPF), with Python bindings. It ships three planners (prioritized 
 Conflict-Based Search, and bounded-suboptimal ECBS), an independent solution validator, a
 benchmark on the standard MovingAI maps, a profiled low-level search, and an animated replay.
 
-**Start here: [docs/GUIDE.md](docs/GUIDE.md)** (how the code works, file by file, with a traced run).
-
 ## Why it is hard
 
 - **The joint search space explodes.** With 100 agents the joint state space is astronomically
@@ -147,15 +145,6 @@ Low-level search profile (run B, single process pinned to one core, median of 5;
 - CI (`.github/workflows/ci.yml`) is written but has not run on GitHub yet.
 - Lifelong (online task arrival) mode is not implemented.
 
-## Target roles
-
-- **PSA Corporation**: fleet path planning for terminal AGVs, a reusable C++ library with a
-  CMake package, and a visual replay.
-- **Griffin Labs (LionsBot)**: multi-robot path planning in C++ and Python, tested under
-  sanitizers and verified by an independent checker.
-- **HTX RAUS**: motion planning for many unmanned agents, with a measured scaling study.
-- **Accenture**: clean, tested, packaged engineering with CI and reproducible results.
-
 ## Layout
 
 | path | contents |
@@ -168,6 +157,5 @@ Low-level search profile (run B, single process pinned to one core, median of 5;
 | `tests/` | GoogleTest suite, brute-force reference |
 | `results/` | benchmark CSV, summary and plots, profile tables |
 
-Docs: [study guide](docs/GUIDE.md), [features](docs/FEATURES.md), [design](docs/DESIGN.md),
-[interview notes](docs/INTERVIEW_NOTES.md), [decisions](DECISIONS.md).
+Docs: [features](docs/FEATURES.md), [design](docs/DESIGN.md), [decisions](DECISIONS.md).
 Data: MovingAI MAPF benchmark (Stern et al., SoCS 2019), ODC-By licence, not committed.
