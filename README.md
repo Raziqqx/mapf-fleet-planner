@@ -5,6 +5,8 @@ path finding, MAPF), with Python bindings. It ships three planners (prioritized 
 Conflict-Based Search, and bounded-suboptimal ECBS), an independent solution validator, a
 benchmark on the standard MovingAI maps, a profiled low-level search, and an animated replay.
 
+**Start here: [docs/GUIDE.md](docs/GUIDE.md)** (how the code works, file by file, with a traced run).
+
 ## Why it is hard
 
 - **The joint search space explodes.** With 100 agents the joint state space is astronomically
@@ -22,26 +24,53 @@ benchmark on the standard MovingAI maps, a profiled low-level search, and an ani
 
 ![Animated replay: 20 agents on room-32-32-4](docs/replay.svg)
 
-`docs/replay.svg` is an animated SVG (SMIL, 36 KiB) of 20 agents on `room-32-32-4`, generated
-through the Python bindings. The plan is validated before the file is written. To regenerate it:
+`docs/replay.svg` is an animated SVG (SMIL, 36 KiB) of 20 agents on `room-32-32-4`, planned by CBS
+through the Python bindings. The plan is validated before the file is written. To regenerate it
+(after the venv step in Quick start):
 
 ```bash
 scripts/download_movingai.sh
-make replay          # needs python3 with pybind11
+make replay          # uses .venv/bin/python (needs pybind11)
 ```
 
 Compare all planners on one instance from Python:
 
 ```bash
 make python
-PYTHONPATH=build/release python3 python/examples/plan_room.py room-32-32-4 1 20
+PYTHONPATH=build/release .venv/bin/python python/examples/plan_room.py room-32-32-4 1 20
 ```
+
+## See it working
+
+Run these from the repository root after the Quick start setup (venv, download, build).
+
+1. **Plan one instance with every planner.**
+   `make python && PYTHONPATH=build/release .venv/bin/python python/examples/plan_room.py room-32-32-4 1 20`
+   You should see a table of four rows (pp, cbs, ecbs w1.2, ecbs w1.5), each `solved` with
+   `valid True`; CBS has the lowest sum of costs (569) and takes the longest.
+2. **Watch the fleet move.** `make replay`, then open `docs/replay.svg` in a web browser
+   (Chrome, Firefox or Edge). You should see 20 coloured discs moving around a room map, each
+   stopping inside the square outline of the same colour, looping forever, with the cost in the
+   caption.
+3. **Run a mini benchmark (about 10 s).**
+   `./build/release/mapf_bench --data data --maps room-32-32-4 --agents 10:30:10 --scens 1:3:1 --planners pp,cbs,ecbs:1.5 --time-limit 2 --jobs 3 --out build/demo/mini.csv`
+   You should see lines like `room-32-32-4 cbs 20 agents: 1/3 solved`; CBS starts failing at
+   20-30 agents while pp and ecbs_w1.5 solve all. `build/demo/mini.csv` has one row per run with
+   `valid` = 1 for every solved plan.
+4. **Plot the full benchmark.**
+   `.venv/bin/python scripts/plot_bench.py results/bench.csv build/demo/plots`, then open
+   `build/demo/plots/bench_success.png`. You should see five panels (one per map) of success rate
+   against agent count, with the CBS line dropping first.
+
+There is no GUI or web UI, so there is no screenshot; the animated SVG above is the visual output.
 
 ## Quick start
 
 Requirements: CMake, Ninja, a C++20 compiler, Python 3 (only for the scripts and bindings).
+The Makefile uses `.venv/bin/python` when it exists, else `python3` (override with `PYTHON=...`).
 
 ```bash
+python3 -m venv .venv && .venv/bin/pip install pybind11==2.13.6 pytest matplotlib==3.9.2
 scripts/download_movingai.sh     # MovingAI maps + scenarios, ~4 MB (ODC-By, see data/README.md)
 make build                       # release build: libmapf, validator, mapf_bench, mapf_profile
 make test                        # GoogleTest suite under ASan + UBSan
@@ -139,6 +168,6 @@ Low-level search profile (run B, single process pinned to one core, median of 5;
 | `tests/` | GoogleTest suite, brute-force reference |
 | `results/` | benchmark CSV, summary and plots, profile tables |
 
-Docs: [features](docs/FEATURES.md), [design](docs/DESIGN.md),
+Docs: [study guide](docs/GUIDE.md), [features](docs/FEATURES.md), [design](docs/DESIGN.md),
 [interview notes](docs/INTERVIEW_NOTES.md), [decisions](DECISIONS.md).
 Data: MovingAI MAPF benchmark (Stern et al., SoCS 2019), ODC-By licence, not committed.

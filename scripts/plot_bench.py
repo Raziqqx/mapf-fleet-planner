@@ -43,6 +43,7 @@ def main(csv_path, out_dir):
                 data[(m,) + key][n].append(float(r[m]))
 
     out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
     for metric, ylabel in METRICS.items():
         fig, axes = plt.subplots(1, len(maps), figsize=(4 * len(maps), 3.4), sharey=metric == "success")
         for ax, mp in zip(axes, maps):

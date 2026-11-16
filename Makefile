@@ -5,7 +5,9 @@
 #   make reproduce     MovingAI download + run-A benchmark run serially + profile (~20 min)
 #   make replay        docs/replay.svg through the Python bindings
 #   make format-check  clang-format, as in CI
-PYTHON ?= python3
+# Use the project venv when it exists (it has pybind11, pytest, matplotlib);
+# the system python3 usually has none of them.
+PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
 FORMAT_FILES := $(shell find include src bench tests validator python -name '*.cpp' -o -name '*.hpp')
 
 .PHONY: build test python pytest bench profile reproduce replay format format-check

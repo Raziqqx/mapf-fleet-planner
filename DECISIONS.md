@@ -155,3 +155,10 @@ Decisions taken while building, with the reason for each. Newest at the bottom o
   the ~15 min budget, so it was not re-run. `results/bench.csv` keeps its success rates (instances
   finishing near the 10 s limit may be slightly understated under load); its runtimes were measured with 10 parallel groups and are noisy. Clean,
   single-threaded timings are in `results/profile.md`. `make bench` re-runs it serially.
+
+## Final-round checks (2026-11-16)
+- The system `python3` has no pybind11/pytest, so `make pytest` failed as documented. The
+  Makefile now defaults `PYTHON` to `.venv/bin/python` when it exists, and Quick start creates
+  that venv first. `scripts/plot_bench.py` creates its output directory so it can write to
+  `build/demo/plots` in the "See it working" steps.
+- No screenshot: the project has no GUI or web UI; the animated `docs/replay.svg` is the visual.
