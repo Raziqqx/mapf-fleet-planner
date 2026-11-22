@@ -1,5 +1,7 @@
 # mapf-fleet-planner
 
+Run it in your browser: https://raziqqx.github.io/demo/
+
 A C++20 library that plans collision-free paths for a fleet of robots on a grid (multi-agent
 path finding, MAPF), with Python bindings. It ships three planners (prioritized planning, optimal
 Conflict-Based Search, and bounded-suboptimal ECBS), an independent solution validator, a
